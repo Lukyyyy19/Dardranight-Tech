@@ -25,13 +25,13 @@ public class ScreenManager : MonoBehaviour
 
     private void Update()
     {
-        if (UserInputsManager.Instance.PauseInput)
+        if (UserInputsManager.Instance.PauseInput && GameManager.Instance!=null)
         {
             Pause();
         }
     }
 
-    void Pause()
+    public void Pause()
     {
         OnPause?.Invoke();
         Time.timeScale = 0;

@@ -11,7 +11,7 @@ public class BulletPool : MonoBehaviour
     public void IntantiateBullets(int id, Bullet bulletType, int prewarm = 20)
     {
         var bulletPoolTemp = new GameObject();
-        bulletPoolTemp.name = "Pool de " + id;
+        bulletPoolTemp.name = $"Pool de {(BulletType)id}";
         Func<Bullet> bulletFunc = () =>
         {
             Bullet bullet = GameObject.Instantiate(bulletType, Vector2.zero, Quaternion.identity);

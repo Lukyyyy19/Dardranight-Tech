@@ -213,7 +213,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 092f248bad40ec74e8f4b7432870eb04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_health: 0
   m_rb: {fileID: 7495562077690583559}
   m_enemyVisual: {fileID: 5994549523826337321}
   m_timeToMoveCounter: 0
   m_timeToShootCounter: 0
+  m_powerUp: {fileID: 7475960429744088976, guid: cf21cca49d582f548abfa3226a270ed2, type: 3}

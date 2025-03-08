@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour, IDamageable
 {
-    [SerializeField] protected float m_health;
-    protected float m_maxHealth = 4;
+    [SerializeField] protected int m_health;
+    protected int m_maxHealth = 4;
     [SerializeField] protected Rigidbody2D m_rb;
     protected bool m_isDead;
 
@@ -14,7 +14,7 @@ public class Entity : MonoBehaviour, IDamageable
         m_health = m_maxHealth;
     }
 
-    public virtual void TakeDamage(float damage)
+    public virtual void TakeDamage(int damage)
     {
         m_health -= damage;
         if (m_health <= 0)
@@ -26,6 +26,6 @@ public class Entity : MonoBehaviour, IDamageable
     public virtual void Die()
     {
         m_isDead = true;
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
     }
 }

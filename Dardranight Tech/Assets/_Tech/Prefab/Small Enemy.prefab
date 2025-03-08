@@ -110,10 +110,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9c5029678178ff4db6229f120b66c73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_health: 0
   m_rb: {fileID: 4201437913831190107}
   m_enemyVisual: {fileID: 7660953887011177069}
   m_timeToMoveCounter: 0
   m_timeToShootCounter: 0
+  m_powerUp: {fileID: 7475960429744088976, guid: cf21cca49d582f548abfa3226a270ed2, type: 3}
 --- !u!1 &3123382299667738209
 GameObject:
   m_ObjectHideFlags: 0

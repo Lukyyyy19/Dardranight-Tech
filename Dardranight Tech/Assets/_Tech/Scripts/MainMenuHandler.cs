@@ -48,6 +48,10 @@ public class MainMenuHandler : MonoBehaviour
         deselectEntry.callback.AddListener(OnDeselect);
         trigger.triggers.Add(deselectEntry);
 
+        EventTrigger.Entry sumbitEntry = new EventTrigger.Entry { eventID = EventTriggerType.Submit };
+        sumbitEntry.callback.AddListener(OnDeselect);
+        trigger.triggers.Add(sumbitEntry);
+
         EventTrigger.Entry pointerEnterEntry = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
         pointerEnterEntry.callback.AddListener(OnPointerEnter);
         trigger.triggers.Add(pointerEnterEntry);

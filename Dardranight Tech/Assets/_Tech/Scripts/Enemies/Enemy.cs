@@ -1,9 +1,12 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Enemy : Entity
 {
+    int m_id;
+    Action<int, Enemy> notify;
     [SerializeField] EnemyVisual m_enemyVisual;
     protected float m_timeToMove;
     [SerializeField] protected float m_timeToMoveCounter;
@@ -18,6 +21,20 @@ public class Enemy : Entity
     Coroutine m_hitEffect;
 
     public Action OnDeath;
+
+    [SerializeField] PowerUp m_powerUp;
+    public EnemiesType EnemyType => (EnemiesType)m_id;
+    public void Configure(int id, Action<int, Enemy> enemy)
+    {
+        m_id = id;
+        notify = enemy;
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        InitCounters();
+    }
 
     protected virtual void Update()
     {
@@ -36,8 +53,8 @@ public class Enemy : Entity
             m_timeToShootCounter = m_timeToShoot;
             Shoot();
         }
-        
-        if(transform.position.x > (GameManager.Instance.Width) || transform.position.x < -GameManager.Instance.Width)
+
+        if (transform.position.x > (GameManager.Instance.Width) || transform.position.x < -GameManager.Instance.Width)
         {
             m_direction *= -1;
         }
@@ -57,8 +74,9 @@ public class Enemy : Entity
             BulletType.EnemyBullet);
     }
 
-    public override void TakeDamage(float damage)
+    public override void TakeDamage(int damage)
     {
+        if (m_isDead) return;
         m_enemyVisual.StartHitEffect();
         base.TakeDamage(damage);
     }
@@ -66,14 +84,45 @@ public class Enemy : Entity
     public override void Die()
     {
         OnDeath?.Invoke();
+        var probability = Random.Range(0, 100);
+        if (probability < 15)
+        {
+            Instantiate(m_powerUp, transform.position, Quaternion.identity);
+        }
         base.Die();
+        notify.Invoke(m_id, this);
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if(other.gameObject.CompareTag("Enemy"))
+        if (other.gameObject.CompareTag("Enemy"))
         {
             m_direction *= -1;
         }
+    }
+
+    public void TurnOn()
+    {
+        m_enemyVisual.ResetVisuals();
+        m_health = m_maxHealth;
+        m_isDead = false;
+        InitCounters();
+    }
+
+    private void InitCounters()
+    {
+        m_timeToMove = UnityEngine.Random.Range(1f, 3f);
+        m_timeToMoveCounter = m_timeToMove;
+        m_timeToShootCounter = m_timeToShoot;
+    }
+
+    public void TurnOff()
+    {
+        m_enemyVisual.ResetVisuals();
+    }
+
+    private void OnDisable()
+    {
+        OnDeath = null;
     }
 }
