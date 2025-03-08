@@ -33,9 +33,7 @@ public class BulletPool : MonoBehaviour
 
     public Bullet Get(int id, Vector3 pos, Vector3 dir)
     {
-        Debug.Log("el id es:" + id);
         Bullet myBullet = pools[id].Get();
-        Debug.Log(myBullet.name);
         myBullet.Move(pos, dir);
         return myBullet;
     }

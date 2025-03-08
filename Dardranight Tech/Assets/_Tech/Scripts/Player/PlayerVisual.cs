@@ -23,4 +23,10 @@ public class PlayerVisual : MonoBehaviour
     {
         m_anim.SetBool(m_stopMovingSide, !isMoving);
     }
+    
+    private void OnDisable()
+    {
+        m_playerController.OnGoingRightChanged -= OnGoingRightChanged;
+        m_playerController.OnIsMovingChanged -= OnIsMovingChanged;
+    }
 }

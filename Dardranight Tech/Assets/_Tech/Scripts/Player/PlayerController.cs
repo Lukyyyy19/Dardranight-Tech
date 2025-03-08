@@ -1,9 +1,8 @@
 using System;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Entity
 {
-    [SerializeField] Rigidbody2D m_rb;
     PlayerData m_playerData;
     private bool m_goingRight;
     private bool m_isMoving;
@@ -34,8 +33,9 @@ public class PlayerController : MonoBehaviour
     public Action<bool> OnGoingRightChanged;
     public Action<bool> OnIsMovingChanged;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         m_playerData = new PlayerData();
     }
 
@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
         IsMoving = UserInputsManager.Instance.GetMovementInput().x != 0;
         if (UserInputsManager.Instance.ShootInput)
         {
-            
+            BulletPoolSystem.Instance.GetBullet(transform.position, transform.up,BulletType.PlayerBullet);
         }
     }
 

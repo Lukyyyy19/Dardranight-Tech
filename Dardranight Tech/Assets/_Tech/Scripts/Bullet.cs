@@ -20,22 +20,24 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
-        if(!m_move)return;
+        if (!m_move) return;
         timer += Time.deltaTime;
         if (timer >= m_lifeTime)
         {
             TimeCompleted();
         }
+
         transform.Translate(m_direction * m_speed * Time.deltaTime);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Enemy"))
+        if (other.TryGetComponent(out IDamageable damageable))
         {
-            Destroy(other.gameObject);
-            Destroy(gameObject);
+            damageable.TakeDamage(1);
         }
+
+        TimeCompleted();
     }
 
     public void Move(Vector2 pos, Vector2 dir)
@@ -58,7 +60,7 @@ public class Bullet : MonoBehaviour
 
     public void TurnOn()
     {
-       m_move = true;
+        m_move = true;
     }
 
     public void TurnOff()
