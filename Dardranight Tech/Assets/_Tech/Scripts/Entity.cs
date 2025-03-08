@@ -2,12 +2,13 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class Entity : MonoBehaviour,IDamageable
+public class Entity : MonoBehaviour, IDamageable
 {
-    protected float m_health;
+    [SerializeField] protected float m_health;
     protected float m_maxHealth = 4;
     [SerializeField] protected Rigidbody2D m_rb;
     protected bool m_isDead;
+
     protected virtual void Awake()
     {
         m_health = m_maxHealth;
@@ -27,6 +28,4 @@ public class Entity : MonoBehaviour,IDamageable
         m_isDead = true;
         gameObject.SetActive(false);
     }
-    
-    
 }

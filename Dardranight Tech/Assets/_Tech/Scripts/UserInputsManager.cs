@@ -11,7 +11,9 @@ public class UserInputsManager : MonoBehaviour
 
     public bool ShootInput { get; private set; }
     public bool PauseInput { get; private set; }
-
+    
+    public bool UINavigate { get; private set; }
+    
     private void Awake()
     {
         if (m_instance == null)
@@ -33,15 +35,18 @@ public class UserInputsManager : MonoBehaviour
     {
         ShootInput = m_inputActions.Player.Attack.WasPressedThisFrame();
         PauseInput = m_inputActions.Player.Pause.WasPressedThisFrame();
+        UINavigate = m_inputActions.UI.Navigate.WasPerformedThisFrame();
     }
 
     void OnPause()
     {
+        m_inputActions.Player.Disable();
         m_playerInput.SwitchCurrentActionMap("UI");
     }
 
     void OnResume()
     {
+        m_inputActions.Player.Enable();
         m_playerInput.SwitchCurrentActionMap("Player");
     }
     
@@ -55,5 +60,7 @@ public class UserInputsManager : MonoBehaviour
     {
         ScreenManager.Instance.OnPause -= OnPause;
         ScreenManager.Instance.OnResume -= OnResume;
+        
+        m_inputActions.Disable();
     }
 }
