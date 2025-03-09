@@ -47,7 +47,7 @@ public class EnemyVisual : MonoBehaviour
         Instantiate(m_ExplosionParticles, transform.position, Quaternion.identity);
     }
 
-    private void OnDeath()
+    private void OnDeath(Enemy enemy)
     {
         InstantiateExplosionParticles();
         StopCoroutine(m_hitEffect);

@@ -34,7 +34,7 @@ public class UserInputsManager : MonoBehaviour
     private void Update()
     {
         ShootInput = m_inputActions.Player.Attack.WasPressedThisFrame();
-        PauseInput = m_inputActions.Player.Pause.WasPressedThisFrame();
+        PauseInput = m_inputActions.Player.Pause.WasPressedThisFrame() || m_inputActions.UI.Pause.WasPressedThisFrame();
         UINavigate = m_inputActions.UI.Navigate.WasPerformedThisFrame();
     }
 

@@ -20,7 +20,7 @@ public class Enemy : Entity
     protected bool m_canMove;
     Coroutine m_hitEffect;
 
-    public Action OnDeath;
+    public Action<Enemy> OnDeath;
 
     [SerializeField] PowerUp m_powerUp;
     public EnemiesType EnemyType => (EnemiesType)m_id;
@@ -34,6 +34,11 @@ public class Enemy : Entity
     {
         base.Awake();
         InitCounters();
+    }
+    
+    public void SetTimeToShoot(float time)
+    {
+        m_timeToShoot = time;
     }
 
     protected virtual void Update()
@@ -83,7 +88,7 @@ public class Enemy : Entity
 
     public override void Die()
     {
-        OnDeath?.Invoke();
+        OnDeath?.Invoke(this);
         var probability = Random.Range(0, 100);
         if (probability < 15)
         {

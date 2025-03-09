@@ -9,43 +9,58 @@ public class ScreenManager : MonoBehaviour
     public static ScreenManager Instance => m_instance;
     public Action OnPause;
     public Action OnResume;
+    public Action<bool> OnPlay;
+    [SerializeField] private bool m_isPaused;
 
     private void Awake()
     {
         if (m_instance == null)
         {
             m_instance = this;
-            DontDestroyOnLoad(this);
-        }
-        else
-        {
-            Destroy(gameObject);
         }
     }
 
     private void Update()
     {
-        if (UserInputsManager.Instance.PauseInput && GameManager.Instance!=null)
+        if (UserInputsManager.Instance.PauseInput)
         {
-            Pause();
+            switch (m_isPaused)
+            {
+                case true:
+                    Resume();
+                    break;
+                case false:
+                    Pause();
+                    break;
+            }
         }
     }
 
     public void Pause()
     {
-        OnPause?.Invoke();
+        m_isPaused = true;
         Time.timeScale = 0;
+        OnPause?.Invoke();
     }
 
     public void Resume()
     {
-        OnResume?.Invoke();
+        m_isPaused = false;
         Time.timeScale = 1;
+        OnResume?.Invoke();
     }
 
     public void ChangeScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
+        Resume();
+    }
+
+    public void GoBackToMainMenu()
+    {
+        SaveSystem.Save();
+        PlayerPrefs.SetInt("HasSave", 1);
+        SceneManager.LoadScene("Main");
     }
 
     public void QuitGame()
@@ -55,5 +70,21 @@ public class ScreenManager : MonoBehaviour
 #elif PLATFORM_STANDALONE
         Application.Quit();
 #endif
+    }
+
+    public void PlayGame(bool wantToContinue)
+    {
+        if (!wantToContinue)
+        {
+            PlayerPrefs.SetInt("HasSave", 0);
+        }
+
+        ChangeScene("SampleScene");
+    }
+
+    public void StartGame()
+    {
+        var hasSave = PlayerPrefs.GetInt("HasSave") == 1;
+        OnPlay?.Invoke(hasSave);
     }
 }

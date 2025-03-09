@@ -8,8 +8,7 @@ public class PlayerController : Entity
     private Vector2 m_movementInput;
     private bool m_goingRight;
     private bool m_isMoving;
-    float m_abilityDuration = 5f;
-    float m_abilityTimer = 0f;
+    
 
     bool GoingRight
     {
@@ -40,12 +39,14 @@ public class PlayerController : Entity
     public Action<PlayerData> OnPlayerDeath;
     public Action<int> OnPlayerLooseHealth;
     public Action<int> OnPlayerScoreChanged;
+
     protected override void Awake()
     {
         base.Awake();
         m_playerData = new PlayerData();
         m_maxHealth = m_playerData.maxHealth;
         m_health = m_maxHealth;
+        m_playerData.health = m_health;
     }
 
     private void Start()
@@ -68,10 +69,10 @@ public class PlayerController : Entity
             }
         }
 
-        if (m_abilityTimer > 0)
+        if (m_playerData.m_abilityTimer > 0)
         {
-            m_abilityTimer -= Time.deltaTime;
-            if (m_abilityTimer <= 0)
+            m_playerData.m_abilityTimer -= Time.deltaTime;
+            if (m_playerData.m_abilityTimer <= 0)
             {
                 ResetAbilities();
             }
@@ -112,6 +113,7 @@ public class PlayerController : Entity
                 m_playerData.score += 2;
                 break;
         }
+
         OnPlayerScoreChanged?.Invoke(m_playerData.score);
     }
 
@@ -128,11 +130,40 @@ public class PlayerController : Entity
             {
                 case PowerUpAbility.BulletsQTY:
                     m_playerData.bulletQty = 3;
-                    m_abilityTimer = m_abilityDuration;
+                    m_playerData.m_abilityTimer = m_playerData.m_abilityDuration;
                     break;
             }
 
             Destroy(other.gameObject);
         }
     }
+
+    public int GetHealth()
+    {
+        return m_playerData.health;
+    }
+    public int GetScore()
+    {
+        return m_playerData.score;
+    }
+    
+    
+    public void Save(ref PlayerSaveData data)
+    {
+        data.clasePlayerData = m_playerData;
+        data.position = transform.position;
+    }
+
+    public void Load(PlayerSaveData data)
+    {
+        transform.position = data.position;
+        m_playerData = data.clasePlayerData;
+        m_health = m_playerData.health;
+    }
+}
+[System.Serializable]
+public struct PlayerSaveData
+{
+    public Vector3 position;
+    public PlayerData clasePlayerData;
 }

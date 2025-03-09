@@ -12,7 +12,7 @@ public class MainMenuHandler : MonoBehaviour
 
     [SerializeField] private Selectable m_firstSelected;
     [SerializeField] private Selectable m_lastSelected;
-    
+
 
     private float m_selectedAnimationScale = 1.1f;
     private float m_scaleDuration = 0.25f;
@@ -29,7 +29,6 @@ public class MainMenuHandler : MonoBehaviour
             m_originalScales.Add(selectable, selectable.transform.localScale);
             AddListeners(selectable);
         }
-
 //        EventSystem.current.SetSelectedGameObject(m_firstSelectable.gameObject);
     }
 
@@ -48,9 +47,9 @@ public class MainMenuHandler : MonoBehaviour
         deselectEntry.callback.AddListener(OnDeselect);
         trigger.triggers.Add(deselectEntry);
 
-        EventTrigger.Entry sumbitEntry = new EventTrigger.Entry { eventID = EventTriggerType.Submit };
-        sumbitEntry.callback.AddListener(OnDeselect);
-        trigger.triggers.Add(sumbitEntry);
+        EventTrigger.Entry submitEntry = new EventTrigger.Entry { eventID = EventTriggerType.Submit };
+        submitEntry.callback.AddListener(OnDeselect);
+        trigger.triggers.Add(submitEntry);
 
         EventTrigger.Entry pointerEnterEntry = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
         pointerEnterEntry.callback.AddListener(OnPointerEnter);
@@ -63,7 +62,7 @@ public class MainMenuHandler : MonoBehaviour
 
     private void Update()
     {
-        if(UserInputsManager.Instance.UINavigate)
+        if (UserInputsManager.Instance.UINavigate)
         {
             OnNavigate();
         }
@@ -102,7 +101,7 @@ public class MainMenuHandler : MonoBehaviour
 
     private void OnNavigate()
     {
-        if(EventSystem.current.currentSelectedGameObject == null && m_lastSelected!=null)
+        if (EventSystem.current.currentSelectedGameObject == null && m_lastSelected != null)
         {
             EventSystem.current.SetSelectedGameObject(m_lastSelected.gameObject);
         }
