@@ -44,6 +44,7 @@ public class EnemyVisual : MonoBehaviour
 
     private void InstantiateExplosionParticles()
     {
+        SoundFXManager.Instance.PlaySound(SoundType.Explosion);
         Instantiate(m_ExplosionParticles, transform.position, Quaternion.identity);
     }
 

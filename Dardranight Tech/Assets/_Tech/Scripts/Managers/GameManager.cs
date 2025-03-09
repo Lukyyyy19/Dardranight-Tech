@@ -4,10 +4,8 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class GameManager : MonoBehaviour
+public class GameManager : SingeltonMonoBehaviourScript<GameManager>
 {
-    static GameManager m_instance;
-    public static GameManager Instance => m_instance;
     private bool m_canSpawn = true;
     [SerializeField] Enemy[] m_enemyPrefab;
     float m_spawnRate = 1;
@@ -30,12 +28,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] UIManager m_uiManager;
     public PlayerController PlayerController => m_playerController;
 
-    private void Awake()
+    protected override void Awake()
     {
-        if (m_instance == null)
-        {
-            m_instance = this;
-        }
+        base.Awake();
 
         m_enemiesPool.IntantiateEnemies((int)EnemiesType.BigEnemy, m_enemyPrefab[0]);
         m_enemiesPool.IntantiateEnemies((int)EnemiesType.MediumEnemy, m_enemyPrefab[1]);
@@ -112,7 +107,7 @@ public class GameManager : MonoBehaviour
 
         highScoreData.scores.Add(m_playerController.GetScore());
         highScoreData.names.Add(PlayerPrefs.GetString("PlayerName"));
-        highScoreData.count ++;
+        highScoreData.count++;
     }
 
 
@@ -128,8 +123,9 @@ public class GameManager : MonoBehaviour
         m_enemyCount = gameData.enemyCount;
         for (int i = 0; i < gameData.enemyCount; i++)
         {
-            var enemy = Instantiate(m_enemyPrefab[(int)gameData.types[i]],
-                gameData.positions[i], Quaternion.identity);
+            var enemy = /*Instantiate(m_enemyPrefab[(int)gameData.types[i]],
+                gameData.positions[i], Quaternion.identity);*/
+                m_enemiesPool.Get((int)gameData.types[i], gameData.positions[i]);
             enemy.SetTimeToShoot(Random.Range(1f, 3f));
             enemy.OnDeath += (enemy) =>
             {

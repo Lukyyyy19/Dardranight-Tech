@@ -2,25 +2,18 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class UserInputsManager : MonoBehaviour
+public class UserInputsManager : SingeltonMonoBehaviourScript<UserInputsManager>
 {
     private InputSystem_Actions m_inputActions { get; set; }
     [SerializeField] PlayerInput m_playerInput;
-    private static UserInputsManager m_instance { get; set; }
-    public static UserInputsManager Instance => m_instance;
-
     public bool ShootInput { get; private set; }
     public bool PauseInput { get; private set; }
     
     public bool UINavigate { get; private set; }
     
-    private void Awake()
+    protected override void Awake()
     {
-        if (m_instance == null)
-        {
-            m_instance = this;
-        }
-
+        base.Awake();
         m_inputActions = new InputSystem_Actions();
         m_inputActions.Enable();
     }

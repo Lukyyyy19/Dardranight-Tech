@@ -3,21 +3,18 @@ using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ScreenManager : MonoBehaviour
+public class ScreenManager : SingeltonMonoBehaviourScript<ScreenManager>
 {
-    private static ScreenManager m_instance;
-    public static ScreenManager Instance => m_instance;
     public Action OnPause;
     public Action OnResume;
     public Action<bool> OnPlay;
+    public Action OnStartGame;
+    public Action OnGoBackToMainMenu;
     [SerializeField] private bool m_isPaused;
-
-    private void Awake()
+    protected override void Awake()
     {
-        if (m_instance == null)
-        {
-            m_instance = this;
-        }
+        m_dontDestroyOnLoad = true;
+        base.Awake();
     }
 
     private void Update()
@@ -60,6 +57,7 @@ public class ScreenManager : MonoBehaviour
     {
         SaveSystem.Save();
         PlayerPrefs.SetInt("HasSave", 1);
+        OnGoBackToMainMenu?.Invoke();
         SceneManager.LoadScene("Main");
     }
 
@@ -79,6 +77,7 @@ public class ScreenManager : MonoBehaviour
             PlayerPrefs.SetInt("HasSave", 0);
         }
 
+        OnStartGame?.Invoke();
         ChangeScene("SampleScene");
     }
 

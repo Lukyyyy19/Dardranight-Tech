@@ -61,6 +61,7 @@ public class PlayerController : Entity
         IsMoving = m_movementInput.x != 0;
         if (UserInputsManager.Instance.ShootInput)
         {
+            SoundFXManager.Instance.PlaySound(SoundType.PlayerShoot);
             for (int i = 0; i < m_playerData.bulletQty; i++)
             {
                 var x = m_playerData.bulletQty == 1 ? i : i - 1;
