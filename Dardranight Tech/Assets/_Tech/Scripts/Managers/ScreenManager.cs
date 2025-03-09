@@ -11,6 +11,7 @@ public class ScreenManager : SingeltonMonoBehaviourScript<ScreenManager>
     public Action OnStartGame;
     public Action OnGoBackToMainMenu;
     [SerializeField] private bool m_isPaused;
+
     protected override void Awake()
     {
         m_dontDestroyOnLoad = true;
@@ -49,6 +50,11 @@ public class ScreenManager : SingeltonMonoBehaviourScript<ScreenManager>
 
     public void ChangeScene(string sceneName)
     {
+        if (sceneName == "Main")
+        {
+            OnGoBackToMainMenu?.Invoke();
+        }
+
         SceneManager.LoadScene(sceneName);
         Resume();
     }

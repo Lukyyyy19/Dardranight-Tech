@@ -2616,6 +2616,7 @@ MonoBehaviour:
   - {fileID: 4831675733189809261, guid: bf5083877eb2a6d498bbc9f7d58cc8e1, type: 3}
   - {fileID: 7586275607074949769, guid: 711e19d12f30231479fb31bbf3d56f6a, type: 3}
   - {fileID: 3990078603136375857, guid: 3e824e9fa9a7a1f428c714383d9a4486, type: 3}
+  m_healthPowerUpPrefab: {fileID: 173204818307137469, guid: 2c698f54f0f685a46bdebf951b6d3834, type: 3}
   m_enemyCount: 0
   m_width: 10.25
   m_height: 3.02

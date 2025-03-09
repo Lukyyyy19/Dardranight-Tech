@@ -9,6 +9,6 @@ public class GameOver : MonoBehaviour
     private int m_score;
     private void Start()
     {
-        m_scoreText.text = SaveSystem.LoadHighScore().scores.Last().ToString();
+        m_scoreText.text = PlayerPrefs.GetInt("CurrentScore").ToString();
     }
 }

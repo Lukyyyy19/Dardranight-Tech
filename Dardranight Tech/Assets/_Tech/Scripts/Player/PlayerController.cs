@@ -37,7 +37,7 @@ public class PlayerController : Entity
     public Action<bool> OnGoingRightChanged;
     public Action<bool> OnIsMovingChanged;
     public Action<PlayerData> OnPlayerDeath;
-    public Action<int> OnPlayerLooseHealth;
+    public Action<int> OnPlayerHealthChanged;
     public Action<int> OnPlayerScoreChanged;
 
     protected override void Awake()
@@ -52,6 +52,7 @@ public class PlayerController : Entity
     private void Start()
     {
         GameManager.Instance.OnEnemyDeath += OnEnemyDeath;
+        OnPlayerScoreChanged?.Invoke(m_playerData.score);
     }
 
     void Update()
@@ -87,11 +88,10 @@ public class PlayerController : Entity
 
     public override void TakeDamage(int damage)
     {
-        // var mainCamera = Camera.main;
-        // mainCamera.DOShakePosition(0.25f);
         m_playerData.health -= damage;
         base.TakeDamage(damage);
-        OnPlayerLooseHealth?.Invoke(m_health);
+        SoundFXManager.Instance.PlaySound(SoundType.PlayerHit);
+        OnPlayerHealthChanged?.Invoke(m_health);
     }
 
     public override void Die()
@@ -133,6 +133,11 @@ public class PlayerController : Entity
                 case PowerUpAbility.BulletsQTY:
                     m_playerData.bulletQty = 3;
                     m_playerData.m_abilityTimer = m_playerData.m_abilityDuration;
+                    break;
+                case PowerUpAbility.Health:
+                    m_playerData.health++;
+                    m_health = m_playerData.health;
+                    OnPlayerHealthChanged?.Invoke(m_health);
                     break;
             }
 

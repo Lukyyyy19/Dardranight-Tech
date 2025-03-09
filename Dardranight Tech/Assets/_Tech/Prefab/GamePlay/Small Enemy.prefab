@@ -127,8 +127,9 @@ GameObject:
   - component: {fileID: 9096988420467245095}
   - component: {fileID: 6279989557829054105}
   - component: {fileID: 7660953887011177069}
+  - component: {fileID: 8878299992971424183}
   m_Layer: 7
-  m_Name: enemy-big_0
+  m_Name: Small Enemy Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -219,3 +220,25 @@ MonoBehaviour:
   m_sr: {fileID: 6279989557829054105}
   m_ExplosionParticles: {fileID: 5237933466754731154, guid: 04d855d686329284893e82d944f98042, type: 3}
   m_enemy: {fileID: 3990078603136375857}
+--- !u!95 &8878299992971424183
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3123382299667738209}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 258e6396c6e521640a5a1855da42f648, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

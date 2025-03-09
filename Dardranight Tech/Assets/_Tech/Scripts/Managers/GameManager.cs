@@ -8,6 +8,8 @@ public class GameManager : SingeltonMonoBehaviourScript<GameManager>
 {
     private bool m_canSpawn = true;
     [SerializeField] Enemy[] m_enemyPrefab;
+    [SerializeField] PowerUp m_healthPowerUpPrefab;
+    private int scoreToSpawnHealth = 500;
     float m_spawnRate = 1;
     float m_spawnTimer = 0;
     [SerializeField] int m_enemyCount = 0;
@@ -47,7 +49,7 @@ public class GameManager : SingeltonMonoBehaviourScript<GameManager>
     private void Start()
     {
         m_playerController.OnPlayerDeath += OnplayerDeath;
-        m_playerController.OnPlayerLooseHealth += PlayerLooseHealth;
+        m_playerController.OnPlayerHealthChanged += PlayerHealthChanged;
         m_playerController.OnPlayerScoreChanged += PlayerScoreChanged;
     }
 
@@ -63,7 +65,7 @@ public class GameManager : SingeltonMonoBehaviourScript<GameManager>
         }
     }
 
-    void PlayerLooseHealth(int health)
+    void PlayerHealthChanged(int health)
     {
         m_uiManager.UpdateHealth(health);
     }
@@ -71,6 +73,13 @@ public class GameManager : SingeltonMonoBehaviourScript<GameManager>
     void PlayerScoreChanged(int score)
     {
         m_uiManager.UpdateScore(score);
+        PlayerPrefs.SetInt("CurrentScore", score);
+        if (m_playerController.GetScore() >= scoreToSpawnHealth)
+        {
+            Instantiate(m_healthPowerUpPrefab, new Vector3(Random.Range(-m_width, m_width), Random.Range(3, 5.5f), 0),
+                Quaternion.identity);
+            scoreToSpawnHealth += 500;
+        }
     }
 
     private void OnplayerDeath(PlayerData playerData)
@@ -105,9 +114,21 @@ public class GameManager : SingeltonMonoBehaviourScript<GameManager>
         if (highScoreData.names == null)
             highScoreData.names = new List<string>();
 
+        if (highScoreData.names.Contains(PlayerPrefs.GetString("PlayerName")))
+        {
+            if (m_playerController.GetScore() >
+                highScoreData.scores[highScoreData.names.IndexOf(PlayerPrefs.GetString("PlayerName"))])
+            {
+                highScoreData.scores[highScoreData.names.IndexOf(PlayerPrefs.GetString("PlayerName"))] =
+                    m_playerController.GetScore();
+            }
+
+            return;
+        }
+
+        highScoreData.count++;
         highScoreData.scores.Add(m_playerController.GetScore());
         highScoreData.names.Add(PlayerPrefs.GetString("PlayerName"));
-        highScoreData.count++;
     }
 
 

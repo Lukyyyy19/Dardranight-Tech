@@ -18,6 +18,7 @@ public enum SoundType
 public class SoundFXManager : SingeltonMonoBehaviourScript<SoundFXManager>
 {
     [SerializeField] AudioSource m_musicAudioSource;
+    [SerializeField] AudioSource m_sfxAudioSourcePrefab;
     [SerializeField] SoundsList[] m_soundsList;
     [SerializeField] AudioMixer m_audioMixer;
 
@@ -42,7 +43,10 @@ public class SoundFXManager : SingeltonMonoBehaviourScript<SoundFXManager>
     {
         AudioClip[] clips = m_soundsList[(int)soundType].clips;
         AudioClip clip = clips[0];
-        AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
+        var audioSource = Instantiate(m_sfxAudioSourcePrefab);
+        audioSource.clip = clip;
+        audioSource.Play();
+        Destroy(audioSource.gameObject, clip.length);
     }
 
     public void PlayMusic(AudioClip clip)
@@ -64,7 +68,6 @@ public class SoundFXManager : SingeltonMonoBehaviourScript<SoundFXManager>
     public void SetMasterVolume(float volume)
     {
         var newVolume = Mathf.Log10(volume) * 20;
-        Debug.Log(newVolume);
         PlayerPrefs.SetFloat("MasterVolume", newVolume);
         m_audioMixer.SetFloat("Master", newVolume);
     }
