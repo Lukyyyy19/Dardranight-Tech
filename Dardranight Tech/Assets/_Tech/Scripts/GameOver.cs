@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -8,6 +9,6 @@ public class GameOver : MonoBehaviour
     private int m_score;
     private void Start()
     {
-        PlayerPrefs.GetInt("CurrentScore", m_score);
+        m_scoreText.text = SaveSystem.LoadHighScore().scores.Last().ToString();
     }
 }

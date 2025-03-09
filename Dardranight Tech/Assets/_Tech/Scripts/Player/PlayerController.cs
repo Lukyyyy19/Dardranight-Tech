@@ -86,8 +86,8 @@ public class PlayerController : Entity
 
     public override void TakeDamage(int damage)
     {
-        var mainCamera = Camera.main;
-        mainCamera.DOShakePosition(0.25f);
+        // var mainCamera = Camera.main;
+        // mainCamera.DOShakePosition(0.25f);
         m_playerData.health -= damage;
         base.TakeDamage(damage);
         OnPlayerLooseHealth?.Invoke(m_health);
@@ -96,6 +96,7 @@ public class PlayerController : Entity
     public override void Die()
     {
         base.Die();
+        SaveSystem.SaveHighScore();
         OnPlayerDeath?.Invoke(m_playerData);
     }
 

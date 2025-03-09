@@ -36,6 +36,7 @@ public static class SaveSystem
     
     public static HighScoreData LoadHighScore()
     {
+        if (!File.Exists(HighScoreFileName())) return new HighScoreData();
         m_saveData.highScoreData = JsonUtility.FromJson<HighScoreData>(File.ReadAllText(HighScoreFileName()));
         return m_saveData.highScoreData;
     }

@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
         m_canSpawn = false;
         //SaveSystem.Save();
         OnGameOver?.Invoke();
-        ScreenManager.Instance.Pause();
+        ScreenManager.Instance.Resume();
         ScreenManager.Instance.ChangeScene("GameOver");
     }
 
@@ -104,8 +104,14 @@ public class GameManager : MonoBehaviour
 
     public void SaveScore(ref HighScoreData highScoreData)
     {
+        if (highScoreData.scores == null)
+            highScoreData.scores = new List<int>();
+        if (highScoreData.names == null)
+            highScoreData.names = new List<string>();
+
         highScoreData.scores.Add(m_playerController.GetScore());
-        highScoreData.names.Add("Player");
+        highScoreData.names.Add(PlayerPrefs.GetString("PlayerName"));
+        highScoreData.count ++;
     }
 
 
@@ -159,6 +165,7 @@ public struct GameData
 [Serializable]
 public struct HighScoreData
 {
+    public int count;
     public List<string> names;
     public List<int> scores;
 }
