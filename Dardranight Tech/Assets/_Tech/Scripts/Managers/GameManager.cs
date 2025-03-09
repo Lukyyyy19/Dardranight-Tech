@@ -86,6 +86,7 @@ public class GameManager : MonoBehaviour
         OnGameOver?.Invoke();
         ScreenManager.Instance.Resume();
         ScreenManager.Instance.ChangeScene("GameOver");
+        PlayerPrefs.SetInt("HasSave", 0);
     }
 
     void SpawnEnemy()
